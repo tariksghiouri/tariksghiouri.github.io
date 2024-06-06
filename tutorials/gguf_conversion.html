@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Convert Model from Safetensors to GGUF and Upload to Hugging Face</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            color: #333;
+        }
+        pre {
+            background: #f4f4f4;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        code {
+            font-family: "Courier New", Courier, monospace;
+            background: #f4f4f4;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>How to Convert a Model from Safetensors to GGUF and Upload to Hugging Face</h1>
+        <p>This tutorial will guide you through the steps of converting a model from the safetensors format to the GGUF format and then uploading it to Hugging Face.</p>
+
+        <h2>Step 1: Install Necessary Libraries and Tools</h2>
+        <p>First, you need to install the required libraries and clone the <code>llama.cpp</code> repository:</p>
+        <pre><code>pip install transformers safetensors huggingface_hub
+git clone https://github.com/ggerganov/llama.cpp.git
+cd llama.cpp
+mkdir build
+cd build
+cmake ..
+cmake --build . --config Release</code></pre>
+
+        <h2>Step 2: Download and Prepare the Model</h2>
+        <p>Use the <code>transformers</code> library to download the model from Hugging Face in safetensors format and save it locally. Create a Python script <code>download_model.py</code> with the following content:</p>
+        <pre><code>from transformers import AutoModelForCausalLM, AutoTokenizer
+
+model_name = "defog/llama-3-sqlcoder-8b"
+save_path = "C:\\Users\\tarik\\Desktop\\llama-3-sqlcoder-8b"
+
+model = AutoModelForCausalLM.from_pretrained(model_name, use_safetensors=True)
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+
+model.save_pretrained(save_path)
+tokenizer.save_pretrained(save_path)</code></pre>
+        <p>Run the script to download the model:</p>
+        <pre><code>python download_model.py</code></pre>
+
+        <h2>Step 3: Convert the Model to GGUF Format</h2>
+        <p>Ensure the output directory exists by running the following script:</p>
+        <pre><code>import os
+
+output_dir = "C:\\Users\\tarik\\Desktop\\llama-3-sqlcoder-8b-gguf"
+if not os.path.exists(output_dir):
+    os.makedirs(output_dir)
+    print(f"Created directory: {output_dir}")
+else:
+    print(f"Directory already exists: {output_dir}")</code></pre>
+        <p>Run the script:</p>
+        <pre><code>python create_output_dir.py</code></pre>
+        <p>Now, convert the model to GGUF format:</p>
+        <pre><code>cd C:\\Users\\tarik\\Desktop\\llama.cpp
+python convert-hf-to-gguf.py "C:\\Users\\tarik\\Desktop\\llama-3-sqlcoder-8b" --outtype f16 --outfile "C:\\Users\\tarik\\Desktop\\llama-3-sqlcoder-8b-gguf\\ggml-model-f16.gguf"</code></pre>
+
+        <h2>Step 4: Quantize the Model (Optional)</h2>
+        <p>If you want to quantize the model, run the following command:</p>
+        <pre><code>cd build
+./quantize "C:\\Users\\tarik\\Desktop\\llama-3-sqlcoder-8b-gguf\\ggml-model-f16.gguf" "C:\\Users\\tarik\\Desktop\\llama-3-sqlcoder-8b-gguf\\ggml-model-q4_0.gguf"</code></pre>
+
+        <h2>Step 5: Upload to Hugging Face</h2>
+        <p>Create a Python script <code>upload_to_hf_http_with_progress.py</code> to upload the converted model to Hugging Face:</p>
+        <pre><code>from huggingface_hub import HfApi, HfFolder
+from pathlib import Path
+import os
+
+# Authenticate with Hugging Face
+token = "your_huggingface_token"
+HfFolder.save_token(token)
+
+# Initialize the HfApi
+api = HfApi()
+
+# Define the repository name and local directory
+repo_name = "MatrixIA/llama-3-sqlcoder-8b"
+local_dir = "C:\\Users\\tarik\\Desktop\\llama-3-sqlcoder-8b-gguf"
+
+def upload_folder(api, folder_path, repo_id, token):
+    folder_path = Path(folder_path)
+    for path in folder_path.rglob("*"):
+        if path.is_file():
+            relative_path = path.relative_to(folder_path)
+            print(f"Uploading {relative_path}...")
+            api.upload_file(
+                path_or_fileobj=str(path),
+                path_in_repo=str(relative_path),
+                repo_id=repo_id,
+                repo_type="model",
+                token=token
+            )
+
+# Upload files with progress
+upload_folder(api, local_dir, repo_name, token)</code></pre>
+        <p>Replace <code>"your_huggingface_token"</code> with your actual Hugging Face token. Run the script to upload the files:</p>
+        <pre><code>python upload_to_hf_http_with_progress.py</code></pre>
+
+        <h2>Conclusion</h2>
+        <p>By following these steps, you can convert a model from safetensors format to GGUF format and upload it to Hugging Face. This tutorial covers installing necessary tools, downloading and preparing the model, converting the model, optionally quantizing it, and uploading it to Hugging Face.</p>
+    </div>
+</body>
+</html>
