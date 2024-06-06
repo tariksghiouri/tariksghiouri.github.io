@@ -12,8 +12,19 @@
             margin: 20px 0;
         }
         .tutorial-item {
+            display: flex;
+            align-items: center;
             border-bottom: 1px solid #ddd;
             padding: 10px 0;
+        }
+        .tutorial-item img {
+            width: 30%;
+            max-width: 200px;
+            height: auto;
+            margin-right: 20px;
+        }
+        .tutorial-item-content {
+            flex: 1;
         }
         .tutorial-item h2 {
             margin: 0;
@@ -46,8 +57,8 @@
             </ul>
             <ul class="icons">
                 <li><a href="https://twitter.com/elonmusk" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
-                <li><a href="https://www.linkedin.com/in/tarik-sghiouri-idrissi/" class="icon brands fa-linkedin-in"><span class="label">LinkedIn</span></a></li>
-                <li><a href="https://github.com/tariksghiouri" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+                <li><a href="https://www.linkedin.com/in/tarik-sghiouri-idrissi/" class="icon brands fa-linkedin-in"><span class="label">LinkedIn"></span></a></li>
+                <li><a href="https://github.com/tariksghiouri" class="icon brands fa-github"><span class="label">GitHub"></span></a></li>
             </ul>
         </nav>
 
@@ -55,8 +66,11 @@
         <div id="main">
             <section class="tutorial-list">
                 <div class="tutorial-item">
-                    <a href="tutorials/gguf_conversion.html"><h2>Convert Safetensors to GGUF and Upload to Hugging Face</h2></a>
-                    <p>This tutorial guides you through converting a model from safetensors to GGUF format and uploading it to Hugging Face.</p>
+                    <img src="images/tutos/gguf_conversion.jpg" alt="How to Convert a Model from Safetensors to GGUF and Upload to Hugging Face">
+                    <div class="tutorial-item-content">
+                        <a href="tutorials/gguf_conversion.html"><h2>Convert Safetensors to GGUF and Upload to Hugging Face</h2></a>
+                        <p>This tutorial guides you through converting a model from safetensors to GGUF format and uploading it to Hugging Face.</p>
+                    </div>
                 </div>    
             </section>
 
@@ -65,9 +79,9 @@
                 <center>
                     <section>
                         <ul class="icons alt">
-                            <li><a target="_blank" href="https://twitter.com/elonmusk" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
-                            <li><a target="_blank" href="https://www.linkedin.com/in/tarik-sghiouri-idrissi/" class="icon brands fa-linkedin-in"><span class="label">LinkedIn</span></a></li>
-                            <li><a target="_blank" href="https://github.com/tarikidrissi" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+                            <li><a target="_blank" href="https://twitter.com/elonmusk" class="icon brands fa-twitter"><span class="label">Twitter"></span></a></li>
+                            <li><a target="_blank" href="https://www.linkedin.com/in/tarik-sghiouri-idrissi/" class="icon brands fa-linkedin-in"><span class="label">LinkedIn"></span></a></li>
+                            <li><a target="_blank" href="https://github.com/tarikidrissi" class="icon brands fa-github"><span class="label">GitHub"></span></a></li>
                         </ul>
                     </section>
                 </center>
